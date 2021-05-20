@@ -1,0 +1,84 @@
+class hbelPoint {
+  
+  // Status Property
+  public $status;
+	
+  // On Sale Property
+  public $sale;
+
+  function __construct($status, $sale) {
+    $this->status = $status;
+    $this->sale = $sale;
+  }
+  function point() {
+	  
+	// Init Status point
+	$status_point = 0;
+	  
+	// Init Sale point
+	$sale_point = 0;
+	 
+	  
+    // Variant Status Point
+	if ( $this->status == 'instock' ) {
+		$status_point = 1;
+	} elseif ( $this->status == 'onbackorder' ) {
+		$status_point = 3;
+	} elseif ( $this->status == 'outofstock' ) {
+		$status_point = 5;
+	} else {
+		$status_point = 0;
+	}
+	  
+	// Variant Sale point
+	if ( $this->sale == true ) {
+		$sale_point = 0;
+	} else {
+		$sale_point = 1;
+	}
+	  
+	return $status_point + $sale_point;
+  }
+}
+
+
+	
+// Loog Args
+$args = array(
+'post_type' => 'product',
+);
+
+// Loop through all the Products
+$loop = new WP_Query( $args );
+if ( $loop->have_posts() ) {
+while ( $loop->have_posts() ) : $loop->the_post();
+
+// Init onSale
+$onSale = false;
+
+// Get Current Product BY id
+$product = wc_get_product( get_the_ID() );
+
+// Get Stock Status
+$status = $product->get_stock_status();
+
+// Get Sale Price
+$salePrice = $product->get_sale_price();
+
+if ( !empty($salePrice) && $salePrice !== "0") {
+  $onSale = true;
+}
+
+$getPoint = new hbelPoint( $status, $onSale );
+$point = $getPoint->point();
+
+update_post_meta( get_the_ID(), 'hbel_sort_point', $point );
+
+endwhile;
+}
+
+// Reset post data
+wp_reset_postdata();
+
+}
+
