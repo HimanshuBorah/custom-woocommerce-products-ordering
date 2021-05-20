@@ -27,12 +27,12 @@ Without sale = 1
 Simply set the following parameters in Query args
 
 
-<code>
+<pre>
 $newArg = array(
-			'post_type' => 'product',
-			'meta_key'  => 'hbel_sort_point',   // Where Points are saved
-			'orderby'    => 'meta_value_num',
-      'order'      => 'ASC',	
+	'post_type' => 'product',
+	'meta_key'  => 'hbel_sort_point',   // Where Points are saved
+	'orderby'    => 'meta_value_num',
+        'order'      => 'ASC',	
 );
-</code>
+</pre>
 	    
