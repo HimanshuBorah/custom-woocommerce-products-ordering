@@ -4,7 +4,6 @@ This is a custom sorting of Woocommerce products based on Stock Status and On Sa
 <pre>
 1. For each product, Total point is calculated based on the following criteria and is saved under a meta field.
 2. For example, if a product is "In Backorder" and it is "With Sale", that particular product will have 4 ( 3+0 ) Points
-3. 
 </pre>
 # pointing-system
 
@@ -34,10 +33,8 @@ Here is the ordering based on points
 6# Product out of stock without sale price ( 6 Points )
 </pre>
 
-# use-case
 
-Simply set the "Default product sorting" option present under <strong>Customizer -> Product Catalog</strong> to "Sort by Stock + Sale"
-
+Query Params
 
 <pre>
 $newArg = array(
@@ -47,4 +44,10 @@ $newArg = array(
         'order'      => 'ASC',	
 );
 </pre>
-	    
+
+# use-case
+
+Simply set the "Default product sorting" option present under <strong>Customizer -> Product Catalog</strong> to "Sort by Stock + Sale"
+
+
+   
