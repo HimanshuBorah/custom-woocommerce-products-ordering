@@ -25,3 +25,58 @@ add_filter( 'woocommerce_get_catalog_ordering_args', function ( $sort_args ) {
  
     return $sort_args;
 } );
+
+
+/**
+ * 
+ *  
+ * This class is used to calcualte the Total Point accumulated by a product 
+ * based on it's "Stock Status" and "On Sale"
+ * 
+ * Total points is returned by calling the "point" method
+ * 
+ */
+ 
+class hbelPoint {
+  
+  // Status Property
+  public $status;
+	
+  // On Sale Property
+  public $sale;
+
+  function __construct($status, $sale) {
+    $this->status = $status;
+    $this->sale = $sale;
+  }
+  function point() {
+	  
+	// Init Status point
+	$status_point = 0;
+	  
+	// Init Sale point
+	$sale_point = 0;
+	 
+	  
+    // Variant Status Point
+	if ( $this->status == 'instock' ) {
+		$status_point = 1;
+	} elseif ( $this->status == 'onbackorder' ) {
+		$status_point = 3;
+	} elseif ( $this->status == 'outofstock' ) {
+		$status_point = 5;
+	} else {
+		$status_point = 0;
+	}
+	  
+	// Variant Sale point
+	if ( $this->sale == true ) {
+		$sale_point = 0;
+	} else {
+		$sale_point = 1;
+	}
+	  
+	return $status_point + $sale_point;
+  }
+}
+
