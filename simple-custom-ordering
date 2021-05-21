@@ -80,3 +80,59 @@ class hbelPoint {
   }
 }
 
+
+/**
+ * 
+ * Loop through the products and save the point inside a custom field hbel_sort_point,
+ * 
+ * Which will also update based on Product's Stock and On sale ( true/ false )
+ * 
+ */
+
+add_action('init', function() {
+	
+	    // Loop Args
+		$args = array(
+			'post_type' => 'product',
+		);
+	    
+	    // Loop through all the Products
+		$loop = new WP_Query( $args );
+		if ( $loop->have_posts() ) {
+			while ( $loop->have_posts() ) : $loop->the_post();
+			    
+			    // Current Product
+			    global $product;
+			
+			    // Init onSale
+			    $onSale = false;
+			
+			    // Get Current Product BY id
+				// $product = wc_get_product( $current );
+			    
+			    
+			    // Get Stock Status
+			    $status = $product->stock_status;
+			    
+			    // Get Sale Price
+			    $salePrice = $product->sale_price;
+			
+			    // Set onSale to true
+			    if ( !empty($salePrice) && $salePrice !== "0") {
+					$onSale = true;
+				}
+			    
+			    // Get Point for this product
+			    $getPoint = new hbelPoint( $status, $onSale );
+			    $point = $getPoint->point();
+			
+			    // Update Point
+			    update_post_meta( get_the_ID(), 'hbel_sort_point', $point );
+			    
+			endwhile;
+		}
+	
+	   // Reset post data
+		wp_reset_postdata();
+		
+});
